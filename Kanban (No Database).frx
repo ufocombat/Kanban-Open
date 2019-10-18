@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="08/06/2019 23:29:28" ReportInfo.Modified="10/18/2019 12:49:52" ReportInfo.CreatorVersion="2019.4.4.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+   
+    private void Data1_BeforePrint(object sender, EventArgs e)
+    {
+      string track = Report.GetColumnValue(&quot;tasks.Track&quot;).ToString();
+     
+      if (string.Compare(track,&quot;Doing&quot;,false)==0)
+      {
+        Shape1.Left = Units.Centimeters * 6.75F;
+      }
+      else if (string.Compare(track,&quot;Done&quot;,false)==0)
+      {
+        Shape1.Left = Units.Centimeters * 13.25F;
+      }
+      else
+      {
+         Shape1.Left = 0;
+      }
+      
+    
+      
+      Line2.Left = Shape1.Left;
+      Line6.Left = Shape1.Left;
+    
+      Text1.Left = Shape1.Left + Units.Centimeters * 0.25F;
+      Text5.Left = Shape1.Left + Units.Centimeters * 0.25F;
+      Text9.Left = Shape1.Left + Units.Centimeters * 0.25F;
+      Text10.Left = Shape1.Left + Units.Centimeters * 3.75F;
+      
+    }
+
+  }
+}
+</ScriptText>
+  <Styles>
+    <Style Name="Style1" Fill.Color="AliceBlue" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="">
+      <TableDataSource Name="tasks" DataType="System.Int32" Enabled="true" TableName="tasks">
+        <Column Name="ID" DataType="System.Int32"/>
+        <Column Name="Project" DataType="System.String"/>
+        <Column Name="Track" DataType="System.String"/>
+        <Column Name="Worker" DataType="System.String"/>
+        <Column Name="Description" DataType="System.String"/>
+        <Column Name="UpdDate" DataType="System.DateTime"/>
+        <Column Name="CrtDate" DataType="System.DateTime"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="85.05">
+      <TextObject Name="Text2" Left="255.15" Top="47.25" Width="220.37" Height="28.35" Text="Doing" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text8" Left="9.45" Top="47.25" Width="179.55" Height="28.35" Text="To Do" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text11" Left="500.85" Top="47.25" Width="210.92" Height="28.35" Text="Done" HorzAlign="Right" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text7" Left="9.45" Width="548.1" Height="37.8" Anchor="Top, Left, Right" Text="Kanban" VertAlign="Center" Font="Arial, 14pt, style=Bold"/>
+      <LineObject Name="Line7" Left="9.45" Top="41.58" Width="708.75" Border.Color="Silver"/>
+      <LineObject Name="Line1" Left="9.45" Top="85.05" Width="708.75" Border.Color="Silver"/>
+      <LineObject Name="Line9" Left="245.7" Top="43.47" Height="39.69" Border.Color="Silver" Border.Style="Dash"/>
+      <LineObject Name="Line10" Left="491.4" Top="43.47" Height="39.69" Border.Color="Silver" Border.Style="Dash"/>
+      <TextObject Name="Text3" Left="623.7" Width="94.5" Height="37.8" Text="[PageN]" HorzAlign="Right" VertAlign="Center" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="89.05" Width="718.2" Height="170.1" Fill.Color="White" BeforePrintEvent="Data1_BeforePrint" DataSource="tasks">
+      <ShapeObject Name="Shape1" Left="9.45" Top="18.9" Width="226.8" Height="132.3" Border.Color="Silver" Border.Width="2" Fill.Color="WhiteSmoke" ClickEvent="Shape1_Click" Shape="RoundRectangle"/>
+      <TextObject Name="Text1" Left="18.9" Top="28.35" Width="198.45" Height="18.9" Text="[tasks.Worker]" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text5" Left="18.9" Top="56.7" Width="207.9" Height="56.7" Text="[tasks.Description]" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="18.9" Top="124.93" Width="141.75" Height="18.9" Text="[tasks.UpdDate]" Format="Custom" Format.Format="MM/dd/yy  HH:mm" Font="Arial, 10pt" TextFill.Color="DimGray"/>
+      <TextObject Name="Text10" Left="160.65" Top="124.93" Width="56.7" Height="18.9" Text="[tasks.ID]" HorzAlign="Right" Font="Arial, 10pt" TextFill.Color="DimGray"/>
+      <LineObject Name="Line2" Left="9.45" Top="52.92" Width="225.67" Border.Color="Silver"/>
+      <LineObject Name="Line6" Left="9.45" Top="118.69" Width="225.67" Border.Color="Silver"/>
+      <LineObject Name="Line3" Left="245.7" Height="170.1" Border.Color="Silver" Border.Style="Dash"/>
+      <LineObject Name="Line4" Left="491.4" Height="170.1" Border.Color="Silver" Border.Style="Dash"/>
+      <LineObject Name="Line8" Top="170.1" Width="718.2" Border.Color="Silver" Border.Style="Dot" Border.Width="0.25"/>
+    </DataBand>
+  </ReportPage>
+</Report>
